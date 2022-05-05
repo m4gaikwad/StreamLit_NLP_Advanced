@@ -38,6 +38,8 @@ def nlp():
 
 def about():
     st.subheader("About")
+    st.info('Author :')
+    st.markdown('### Mayur Gaikwad')
 
 
 def main():
