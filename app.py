@@ -9,9 +9,11 @@ import streamlit as st
 import docx2txt
 #import PyPDF2 as pypdf
 
-# UI implementation File
-import text_analyze
-import tokens
+# Definitions
+import functions
+
+#UI Implementation
+import ui_connections
 
 
 def nlp():
@@ -21,16 +23,16 @@ def nlp():
     if text_file is not None:
         #st.write(dir(text_file))
         if text_file.type == 'application/pdf':
-            raw_text = text_analyze.read_pdf(text_file)
-            tokens.analysis(raw_text)
+            raw_text = functions.read_pdf(text_file)
+            ui_connections.analysis(raw_text)
 
         elif text_file.type == 'text/plain':
             raw_text = str(text_file.read(), 'utf-8')
-            tokens.analysis(raw_text)
+            ui_connections.analysis(raw_text)
 
         elif text_file.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
             raw_text = docx2txt.process(text_file)
-            tokens.analysis(raw_text)
+            ui_connections.analysis(raw_text)
 
         else:
             st.error('Please Upload File with PDF or Text or DOCX format.')
@@ -51,7 +53,7 @@ def main():
     if choice == "Home":
         st.subheader("Analyse Text")
         raw_text = st.text_area("Enter Text Here")
-        tokens.analysis(raw_text)
+        ui_connections.analysis(raw_text)
 
     elif choice == "NLP":
         nlp()

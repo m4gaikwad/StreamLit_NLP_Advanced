@@ -8,7 +8,7 @@ Created on Wed Apr 20 12:12:05 2022
 import streamlit as st
 
 #Definition Python File
-import text_analyze
+import functions
 
 # Plot
 import seaborn as sns
@@ -22,12 +22,13 @@ def analysis(raw_text):
         with st.expander("Original Text"):
             st.write(raw_text)
 
+        #
         with st.expander("Text Analysis"):
-            text_df = text_analyze.text_analyze(raw_text)
+            text_df = functions.text_analyze(raw_text)
             st.dataframe(text_df)
 
         with st.expander("Entities"):
-            entities_df = text_analyze.get_entities(raw_text)
+            entities_df = functions.get_entities(raw_text)
             st.dataframe(entities_df)
 
         # Layouts
@@ -36,17 +37,17 @@ def analysis(raw_text):
         with col1:
             with st.expander("Word Stats"):
                 st.info("Word Statistics")
-                stats = text_analyze.get_word_stats(raw_text)
+                stats = functions.get_word_stats(raw_text)
                 st.dataframe(stats)
 
             with st.expander("Top Keywords"):
                 st.info("Top Keywords")
-                common_words = text_analyze.get_common_words(raw_text, common_tokens)
+                common_words = functions.get_common_words(raw_text, common_tokens)
                 st.write(common_words)
 
             with st.expander("Sentiment"):
                 st.info("Sentiment Analysis")
-                sentiment = text_analyze.get_sentiments(raw_text)
+                sentiment = functions.get_sentiments(raw_text)
                 st.dataframe(sentiment)
 
         with col2:
@@ -66,8 +67,8 @@ def analysis(raw_text):
 
             with st.expander("WordCloud"):
                 st.info("WordCloud")
-                fig2 = text_analyze.plot_wordcloud(raw_text)
+                fig2 = functions.plot_wordcloud(raw_text)
                 st.pyplot(fig2)
 
         with st.expander("Download Results"):
-            text_analyze.download_results(text_df)
+            functions.download_results(text_df)
