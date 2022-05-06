@@ -54,7 +54,7 @@ def analysis(raw_text):
             with st.expander("Plot Word Freq"):
                 st.info("Word Frequencies")
                 fig1 = plt.figure()
-                sns.barplot(common_words['Words'], common_words['Count'])
+                sns.barplot(x=common_words['Words'], y=common_words['Count'])
                 plt.xticks(rotation=45)
                 st.pyplot(fig1)
 
