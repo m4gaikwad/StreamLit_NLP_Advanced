@@ -15,7 +15,15 @@ import functions
 #UI Implementation
 import ui_connections
 
+#Page Configuration
+PAGE_CONFIG = {'page_title': 'NLP Analysis',
+               'page_icon': '🔍',
+               'initial_sidebar_state': 'collapsed'}
 
+st.set_page_config(**PAGE_CONFIG)
+
+
+#Pages
 def nlp():
     st.subheader("NLP Files Process")
     text_file = st.file_uploader('Upload Files',
