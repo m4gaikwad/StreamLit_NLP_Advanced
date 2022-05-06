@@ -10,26 +10,26 @@ import streamlit as st
 #Definition Python File
 import functions
 
-# Plot
-import seaborn as sns
-import matplotlib.pyplot as plt
-
 
 def analysis(raw_text):
     common_tokens = st.sidebar.number_input("Most Common Tokens", 5, 20)
 
+    #Dataframes for extracted data
+    text_df = functions.text_analyze(raw_text)  #Text Information
+    entities_df = functions.get_entities(raw_text) #Text Tags Information (GPE, ORG)
+    stats = functions.get_word_stats(raw_text)  #Word Statistics
+    common_words = functions.get_common_words(raw_text, common_tokens) #Most common words
+    sentiment = functions.get_sentiments(raw_text) #Polarity and Subjectivity of Text
+
     if st.button("Analyse"):
         with st.expander("Original Text"):
-            st.write(raw_text)
+            st.write(raw_text) #Display Raw Text
 
-        #
         with st.expander("Text Analysis"):
-            text_df = functions.text_analyze(raw_text)
-            st.dataframe(text_df)
+            st.dataframe(text_df)  #Display Text Information
 
         with st.expander("Entities"):
-            entities_df = functions.get_entities(raw_text)
-            st.dataframe(entities_df)
+            st.dataframe(entities_df)  #Display Tag Information
 
         # Layouts
         col1, col2 = st.columns(2)
@@ -37,38 +37,31 @@ def analysis(raw_text):
         with col1:
             with st.expander("Word Stats"):
                 st.info("Word Statistics")
-                stats = functions.get_word_stats(raw_text)
-                st.dataframe(stats)
+                st.dataframe(stats)  #Display Word Statistics
 
             with st.expander("Top Keywords"):
                 st.info("Top Keywords")
-                common_words = functions.get_common_words(raw_text, common_tokens)
-                st.write(common_words)
+                st.write(common_words)  #Display Common Keywords
 
             with st.expander("Sentiment"):
                 st.info("Sentiment Analysis")
-                sentiment = functions.get_sentiments(raw_text)
-                st.dataframe(sentiment)
+                st.dataframe(sentiment)  #Display Sentiment Values
 
         with col2:
             with st.expander("Plot Word Freq"):
                 st.info("Word Frequencies")
-                fig1 = plt.figure()
-                sns.barplot(x=common_words['Words'], y=common_words['Count'])
-                plt.xticks(rotation=45)
-                st.pyplot(fig1)
+                word_freq = functions.plot_wordfreq(common_words)
+                st.pyplot(word_freq)  #Display Word Freq. Graph
 
             with st.expander("Plot PoS"):
                 st.info("Part-Of-Speech")
-                fig = plt.figure()
-                sns.countplot(text_df['PoS'])
-                plt.xticks(rotation=45)
-                st.pyplot(fig)
+                pos = functions.plot_pos(text_df)
+                st.pyplot(pos) #Display PoS Count Graph
 
             with st.expander("WordCloud"):
                 st.info("WordCloud")
-                fig2 = functions.plot_wordcloud(raw_text)
-                st.pyplot(fig2)
+                wc = functions.plot_wordcloud(raw_text)
+                st.pyplot(wc) #Display WordCloud
 
         with st.expander("Download Results"):
-            functions.download_results(text_df)
+            functions.download_results(text_df) #Download Text Information

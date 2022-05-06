@@ -14,6 +14,7 @@ import pandas as pd
 import base64
 import time
 from io import StringIO
+
 # text pkgs
 import spacy
 import neattext as nt
@@ -30,6 +31,7 @@ from pdfminer.pdfparser import PDFParser
 
 # Plot
 import matplotlib.pyplot as plt
+import seaborn as sns
 from wordcloud import WordCloud
 
 # Global Variables
@@ -58,13 +60,13 @@ def get_entities(raw_text):
 def get_word_stats(raw_text):
     docx = nt.TextFrame(raw_text)
     stats = docx.word_stats()
-    new_st = dict((k, stats[k])
-                  for k in ['Length of Text', 'Num of Vowels',
-                            'Num of Consonants', 'Num of Stopwords']
-                  if k in stats)
-    stats_df = pd.DataFrame(new_st.values(),
+    new_stats = dict((k, stats[k])
+                     for k in ['Length of Text', 'Num of Vowels',
+                               'Num of Consonants', 'Num of Stopwords']
+                     if k in stats)
+    stats_df = pd.DataFrame(new_stats.values(),
                             columns=['Count'],
-                            index=new_st.keys())
+                            index=new_stats.keys())
     return stats_df
 
 
@@ -91,6 +93,22 @@ def get_sentiments(raw_text):
     senti = pd.DataFrame(sentiment, columns=['Values'],
                          index=['Polarity', 'Subjectivity'])
     return senti
+
+
+#Plot Word Freq
+def plot_wordfreq(dataframe):
+    fig = plt.figure()
+    sns.barplot(x=dataframe['Words'], y=dataframe['Count'])
+    plt.xticks(rotation=45)
+    return fig
+
+
+#Plot Part-of-Speech
+def plot_pos(dataframe):
+    fig = plt.figure()
+    sns.countplot(dataframe['PoS'])
+    plt.xticks(rotation=45)
+    return fig
 
 
 # Plotting WordCloud
